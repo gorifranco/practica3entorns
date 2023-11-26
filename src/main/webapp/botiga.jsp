@@ -1,4 +1,3 @@
-<%@ page import="com.example.practica3desplegaments.Consulta" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -25,8 +24,9 @@
     </tr>
     </thead>
     <tbody>
-        <%=new Consulta()%>
+    <jsp:include page="/Consulta"/>
     </tbody>
 </table>
+<div><</div>
 </body>
 </html>

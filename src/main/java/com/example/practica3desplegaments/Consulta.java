@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
-@WebServlet(name = "consultaGori", value = "/consulta")
+@WebServlet(name = "Consulta", value = "/Consulta")
 public class Consulta extends HttpServlet {
     private List<String[]> array;
 
@@ -17,10 +17,6 @@ public class Consulta extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-            array.forEach(a -> out.println("<tr><td>" + a[0] + "</td><td> " + a[1] + "</td><td>" + a[2] + "</td><td>" + a[3] + "</td></tr>"));
-
-    }
-
-    public void destroy() {
+        array.forEach(a -> out.println("<tr><td>" + a[0] + "</td><td> " + a[1] + "</td><td>" + a[2] + "</td><td>" + a[3] + "</td></tr>"));
     }
 }

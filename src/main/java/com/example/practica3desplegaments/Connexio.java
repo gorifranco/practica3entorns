@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Connexio {
-
     private static final String USERNAME = "debianp1gori";
     private static final String PASSWORD = "DebianP1Gori";
     private static final int PORT = 3306;
@@ -77,5 +76,106 @@ public class Connexio {
             Connexio.closeConnection();
         }
         return result;
+    }
+
+    public static int insert(String name, String description, String preu, String categoria) {
+
+        int result;
+        Connection c = Connexio.getConnection();
+        String sql = "insert into preoductes(nom, descripció, preu, categoria_id) values (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, description);
+            ps.setDouble(3, Double.parseDouble(preu));
+            ps.setInt(4, getCategoryId(categoria));
+
+            result = ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = e.getErrorCode();
+        } finally {
+            closeConnection();
+        }
+        return result;
+    }
+
+    public static int getCategoryId(String category) {
+        int resultat = -1;
+        Connection c = Connexio.getConnection();
+        String sql = "select id from categoria where nom = ?";
+        ResultSet rs = null;
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setString(0, category);
+            rs = ps.executeQuery();
+            if (rs.next()) resultat = rs.getInt(0);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultat;
+    }
+
+    public static int update(int id, String name, String description, String preu, String category) {
+        int resultat;
+        Connection c = Connexio.getConnection();
+        String sql = "update productes set nom = ?, descripció = ?, preu = ?, categoria = ? where id = ?";
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(5, id);
+            ps.setString(1, name);
+            ps.setString(2, description);
+            ps.setDouble(3, Double.parseDouble(preu));
+            ps.setInt(4, getCategoryId(category));
+            resultat = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resultat = e.getErrorCode();
+        }
+        return resultat;
+    }
+
+    public static int delete(int id) {
+        int resultat;
+        Connection c = Connexio.getConnection();
+        String sql = "delete from productes where id = ?";
+        try (PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            resultat = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resultat = e.getErrorCode();
+        }
+        return resultat;
+    }
+
+    public  List<String> getCategories(){
+        Connection c = Connexio.getConnection();
+        String sql = "select nom from categoria";
+        ResultSet rs = null;
+        List<String> resultat = new ArrayList<>();
+        try(Statement st = c.createStatement())
+        {
+            rs = st.executeQuery(sql);
+            while (rs.next()){
+                resultat.add(rs.getString("nom"));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            try{
+                rs.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+
+        }
+        return resultat;
     }
 }
