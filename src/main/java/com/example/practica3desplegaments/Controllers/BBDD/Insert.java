@@ -1,4 +1,4 @@
-package com.example.practica3desplegaments;
+package com.example.practica3desplegaments.Controllers.BBDD;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 @WebServlet("/Insert")
 public class Insert extends HttpServlet {
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html");
@@ -23,11 +24,11 @@ public class Insert extends HttpServlet {
         String categoria = request.getParameter("cat");
 
         int result = Connexio.insert(nom, descripcio, preu, categoria);
-            if(result > 0){
-                out.print("<p>Producte guardat correctament!</p>");
-                request.getRequestDispatcher("botiga.jsp").include(request, response);
-            }else{
-                out.println("<p>Error durant el guardat</p>");
-            }
+        if (result > 0) {
+            out.print("<p>Producte guardat correctament!</p>");
+            request.getRequestDispatcher("botiga.jsp").include(request, response);
+        } else {
+            out.println("<p>Error durant el guardat</p>");
+        }
     }
 }

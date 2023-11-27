@@ -1,8 +1,8 @@
-package com.example.practica3desplegaments;
+package com.example.practica3desplegaments.Controllers.BBDD;
+
+import com.example.practica3desplegaments.models.Producte;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Connexio {
     private static final String USERNAME = "debianp1gori";
@@ -49,33 +49,6 @@ public class Connexio {
                 System.err.println("Failed closing the connection.");
             }
         }
-    }
-
-    public static List<String[]> getAllProducts() {
-
-        Connection c = Connexio.getConnection();
-        String sql = "select productes.nom, descripció, preu, categories.nom as cat from productes \n" +
-                "inner join categories on categories.id = productes.categoria_id";
-
-        List<String[]> result = new ArrayList<>();
-
-        try (Statement st = c.createStatement()) {
-
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                String[] fila = new String[4];
-                fila[0] = rs.getString("nom");
-                fila[1] = rs.getString("descripció");
-                fila[2] = Float.toString(rs.getFloat("preu"));
-                fila[3] = rs.getString("cat");
-                result.add(fila);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            Connexio.closeConnection();
-        }
-        return result;
     }
 
     public static int insert(String name, String description, String preu, String categoria) {
@@ -140,42 +113,26 @@ public class Connexio {
         }
         return resultat;
     }
-
-    public static int delete(int id) {
-        int resultat;
+    public static Producte getProducteFromId(int id){
+        Producte p = null;
         Connection c = Connexio.getConnection();
-        String sql = "delete from productes where id = ?";
-        try (PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            resultat = ps.executeUpdate();
+        String sql = "select productes.id as id, productes.nom as nom, descripció, preu, categories.nom as categoria from productes inner join" +
+                "categories on categories.id = productes.fk_categoria where productes.id =" + id + ";";
+        try(Statement st = c.createStatement();
+        ResultSet rs = st.executeQuery(sql)){
+            if(rs == null) throw new SQLException("Error en la consulta");
+            rs.next();
+            p = new Producte();
+            p.setId(rs.getInt("id"));
+            p.setId(rs.getInt("id"));
+            p.setNom(rs.getString("nom"));
+            p.setDescripcio(rs.getString("descripció"));
+            p.setPreu(rs.getFloat("preu"));
+            p.setCategoria(rs.getString("categoria"));
+
         } catch (SQLException e) {
             e.printStackTrace();
-            resultat = e.getErrorCode();
         }
-        return resultat;
-    }
-
-    public  List<String> getCategories(){
-        Connection c = Connexio.getConnection();
-        String sql = "select nom from categoria";
-        ResultSet rs = null;
-        List<String> resultat = new ArrayList<>();
-        try(Statement st = c.createStatement())
-        {
-            rs = st.executeQuery(sql);
-            while (rs.next()){
-                resultat.add(rs.getString("nom"));
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
-        }finally {
-            try{
-                rs.close();
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-
-        }
-        return resultat;
+        return p;
     }
 }

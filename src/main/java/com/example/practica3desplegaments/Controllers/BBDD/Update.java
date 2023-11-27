@@ -1,4 +1,4 @@
-package com.example.practica3desplegaments;
+package com.example.practica3desplegaments.Controllers.BBDD;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -25,10 +25,10 @@ public class Update extends HttpServlet {
         String categoria = request.getParameter("cat");
 
         int result = Connexio.update(id, nom, descripcio, preu, categoria);
-        if(result > 0){
+        if (result > 0) {
             out.print("<p>Producte guardat correctament!</p>");
             request.getRequestDispatcher("botiga.jsp").include(request, response);
-        }else{
+        } else {
             out.println("<p>Error durant el guardat</p>");
         }
 
