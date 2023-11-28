@@ -25,8 +25,7 @@ public class Insert extends HttpServlet {
 
         int result = Connexio.insert(nom, descripcio, preu, categoria);
         if (result > 0) {
-            out.print("<p>Producte guardat correctament!</p>");
-            request.getRequestDispatcher("botiga.jsp").include(request, response);
+            out.println("<script>alert('Producte guardat correctament!'); window.location.href='botiga.jsp';</script>");
         } else {
             out.println("<p>Error durant el guardat</p>");
         }

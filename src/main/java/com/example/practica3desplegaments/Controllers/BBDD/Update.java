@@ -1,5 +1,6 @@
 package com.example.practica3desplegaments.Controllers.BBDD;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,12 +27,10 @@ public class Update extends HttpServlet {
 
         int result = Connexio.update(id, nom, descripcio, preu, categoria);
         if (result > 0) {
-            out.print("<p>Producte guardat correctament!</p>");
-            request.getRequestDispatcher("botiga.jsp").include(request, response);
+            out.println("<script>alert('Producte guardat correctament!'); window.location.href='botiga.jsp';</script>");
         } else {
             out.println("<p>Error durant el guardat</p>");
         }
 
     }
-
 }

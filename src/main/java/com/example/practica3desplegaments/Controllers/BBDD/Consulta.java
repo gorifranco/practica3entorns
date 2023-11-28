@@ -16,14 +16,15 @@ import jakarta.servlet.annotation.*;
 public class Consulta extends HttpServlet {
     private List<Producte> array;
 
-    public void init() {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         Connection c = Connexio.getConnection();
-        String sql = "select id, productes.nom as nom, descripció, preu, categories.nom as cat from productes \n" +
+        String sql = "select productes.id, productes.nom as nom, descripció, preu, categories.nom as cat from productes \n" +
                 "inner join categories on categories.id = productes.categoria_id";
         array = new ArrayList<>();
 
         try (Statement st = c.createStatement();
-        ResultSet rs = st.executeQuery(sql)) {
+             ResultSet rs = st.executeQuery(sql)) {
             if(rs == null) throw new SQLException("Error durant la consulta");
             while (rs.next()) {
                 Producte p = new Producte();
@@ -36,12 +37,12 @@ public class Consulta extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("error en la consulta: ");
+            System.out.println(sql);
         } finally {
             Connexio.closeConnection();
         }
-    }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         array.forEach(a -> out.println("<tr>" +
@@ -49,8 +50,8 @@ public class Consulta extends HttpServlet {
                 "<td> " + a.getDescripcio() + "</td>" +
                 "<td>" + a.getPreu() +"</td>" +
                 "<td>" + a.getCategoria() + "</td>" +
-                "<td><a href='Editar?id="+ a.getId() +"></a></td>" +
-                "<td><a href='Delete?id=" + a.getId() + "'>Eliminar</a></td>" +
+                "<td class='d-flex'><a href='Editar?id="+ a.getId() +"' class='btn btn-warning'>Editar</a>" +
+                "<a href='Delete?id=" + a.getId() + "' class='btn btn-danger' style='margin-left:4px;'>Eliminar</a></td>" +
                 "</tr>"));
     }
 }

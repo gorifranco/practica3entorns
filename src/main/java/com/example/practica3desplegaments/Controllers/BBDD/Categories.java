@@ -46,7 +46,7 @@ public class Categories extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.setContentType("text/html");
         PrintWriter pw =resp.getWriter();
@@ -56,8 +56,8 @@ public class Categories extends HttpServlet {
         }else {
             for (String item : categories) {
                 String frase = "<option value='" + item + "'";
-                if (Objects.equals(req.getParameter("cat"), item)) frase += " required='required'>";
-                frase += item +"</option>";
+                if (Objects.equals(req.getParameter("cat"), item)) frase += " selected='selected'";
+                frase +=">"+ item +"</option>";
                 pw.println(frase);
             }
         }
