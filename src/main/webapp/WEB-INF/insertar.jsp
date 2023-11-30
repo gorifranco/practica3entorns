@@ -34,7 +34,7 @@
             </div>
         </form>
         <br/>
-        <a href="botiga.jsp">Veure Productes</a>
+        <a href="../botiga.jsp">Veure Productes</a>
     </div>
 </div>
 </body>

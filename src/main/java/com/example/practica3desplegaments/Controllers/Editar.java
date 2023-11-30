@@ -19,7 +19,7 @@ public class Editar  extends HttpServlet {
 
         Producte producte = Connexio.getProducteFromId(id);
         request.setAttribute("producte", producte);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("editar.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/editar.jsp");
         dispatcher.forward(request, response);
     }
 }

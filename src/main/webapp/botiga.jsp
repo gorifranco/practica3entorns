@@ -35,9 +35,8 @@
         </tbody>
     </table>
     <div style="margin: auto; text-align: center">
-        <a href="insertar.jsp" class="btn btn-primary mt-5">Afegir Producte</a>
+        <a href="WEB-INF/insertar.jsp" class="btn btn-primary mt-5">Afegir Producte</a>
     </div>
 </div>
-
 </body>
 </html>

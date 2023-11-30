@@ -2,13 +2,12 @@ package com.example.practica3desplegaments.Controllers.BBDD;
 
 import com.example.practica3desplegaments.models.Producte;
 
-import javax.print.attribute.standard.PrinterInfo;
 import java.sql.*;
 
 
 public class Connexio {
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "1234";
+    private static final String USERNAME = "goridef";
+    private static final String PASSWORD = "goriDef";
     private static final int PORT = 3306;
     private static final String SERVER = "localhost";
     private static final String DATABASE = "la_meva_botiga";
@@ -17,9 +16,9 @@ public class Connexio {
 
     private static void connect() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("org.mariadb.jdbc.Driver");
             // Cargar el controlador JDBC
-            String url = "jdbc:mysql://" + SERVER + ":" + PORT + "/" + DATABASE;
+            String url = "jdbc:mariadb://" + SERVER + ":" + PORT + "/" + DATABASE;
             conn = DriverManager.getConnection(url, USERNAME, PASSWORD);
             System.out.println("Connection success.");
         } catch (SQLException e) {
